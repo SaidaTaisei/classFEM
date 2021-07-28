@@ -3,6 +3,7 @@ import numpy as np
 import mk
 import solver
 import visualizer
+import pandas as pd
 
 if __name__=="__main__":
     model = model.model()
@@ -10,7 +11,7 @@ if __name__=="__main__":
     model.create_elem()
     model.set_bcs()
 
-    max_itr = 20
+    max_itr = 10
     lgn = 2
     max_err = 10**-6
 
@@ -69,7 +70,9 @@ if __name__=="__main__":
     u = U[0:nnum,:]
     v = U[nnum:2 * nnum,:]
     w = U[2 * nnum:3 * nnum,:]
-    model.node[:, 6] = model.node[:, 3] + u[:, -1]
-    model.node[:, 7] = model.node[:, 4] + v[:, -1]
-    model.node[:, 8] = model.node[:, 5] + w[:, -1]
+    model.node[:, 6] = model.node[:, 3] + u[:, -2]
+    model.node[:, 7] = model.node[:, 4] + v[:, -2]
+    model.node[:, 8] = model.node[:, 5] + w[:, -2]
+    node_data = pd.DataFrame(model.node)
+    node_data.to_csv("result_node.csv")
     visualizer.visualizer.visualize_matplotlib(model)

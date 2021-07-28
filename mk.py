@@ -49,7 +49,7 @@ class mk:
         itg = int(poi ** (1 / 3))
         P, W = mk.lgwt(itg,-1,1)
         X = node[:, 3].reshape(-1,1)
-        Y =node[:, 4].reshape(-1,1)
+        Y = node[:, 4].reshape(-1,1)
         Z = node[:, 5].reshape(-1,1)
         u = U[0:20, 0].reshape(-1,1)
         v = U[20:40, 0].reshape(-1,1)
@@ -73,9 +73,9 @@ class mk:
         dSij = np.zeros([6, poi])
         ms = np.zeros([poi, 1])
         Ke = np.zeros([60, 60])
-        for xx in range(1,itg):
-            for yy in range(1, itg):
-                for zz in range(1, itg):
+        for xx in range(1,itg+1):
+            for yy in range(1, itg+1):
+                for zz in range(1, itg+1):
                     cc = cc + 1
                     weight = W[xx-1] * W[yy-1] * W[zz-1]
                     B, F, J = mk.mk_B_mtr(P[xx-1], P[yy-1], P[zz-1], X, Y, Z, x, y, z, u, v, w)
@@ -101,9 +101,9 @@ class mk:
         D[2, 0] = lbd
         D[2, 1] = lbd
         D[2, 2] = lbd + 2 * mu
-        D[3, 3] = lbd
-        D[4, 4] = lbd
-        D[5, 5] = lbd
+        D[3, 3] = mu
+        D[4, 4] = mu
+        D[5, 5] = mu
         return D
 
     @staticmethod
@@ -306,7 +306,7 @@ class mk:
 
             Lp = N2 * (L[:, N1-1].reshape(-1,1) - y * L[:, N2-1].reshape(-1,1)) / (1 - y ** 2)
             Lp = Lp.reshape(Lp.shape[0],1)
-            y0 = y.reshape(-1,1)
+            y0 = np.copy(y.reshape(-1,1))
             y = y0 - L[:, N2-1].reshape(-1,1) / Lp
             #print(L.shape)
             #print(y.shape)
