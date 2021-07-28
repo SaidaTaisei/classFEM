@@ -9,7 +9,7 @@ class model:
         self.y_elemnum = 2
         self.z_elemnum = 2
         self.E = 200000
-        self.nu = 0.2
+        self.nu = 0.20
         self.H = 3000
         self.fy = 5000
         self.step_num = 20
@@ -26,8 +26,8 @@ class model:
                         self.node.append([x,y,z,x_pos,y_pos,z_pos,0,0,0])
                         print(x_pos)
         self.node = np.array(self.node)
-        print(self.node)
-        print(self.node.shape)
+        #print(self.node)
+        #print(self.node.shape)
 
     def create_elem(self):
         self.elem = []
@@ -69,15 +69,15 @@ class model:
                     self.elem.append(index.T)
         self.elem = np.array(self.elem)
         self.elem = self.elem.reshape(self.elem.shape[0],self.elem.shape[-1])
-        print(self.elem)
-        print(self.elem.shape)
+        #print(self.elem)
+        #print(self.elem.shape)
 
     def set_bcs(self):
         self.nnum = self.node.shape[0]
         self.enum = self.elem.shape[0]
         self.dof = 3 * self.nnum
         self.bc_node_0 = np.where((self.node[:, 0] == 0) & (self.node[:, 2] == 0))[0] + 1
-        bc_dof_0 = np.concatenate([self.bc_node_0,self.nnum+self.bc_node_0,2*self.nnum+self.bc_node_0])
+        bc_dof_0 = np.concatenate([self.bc_node_0, self.nnum+self.bc_node_0, 2*self.nnum+self.bc_node_0])
         dub_0 = np.zeros([bc_dof_0.shape[0],self.step_num])
         self.bc_node_1 = np.where((self.node[:, 0] == 2*self.x_elemnum) & (self.node[:, 2] == 0))[0] + 1
         bc_dof_1 = np.concatenate([self.bc_node_1, 2*self.nnum + self.bc_node_1])
@@ -92,7 +92,4 @@ class model:
         self.fdof = self.fdof.reshape([self.fdof.shape[0],1])
         self.fdof = np.delete(self.fdof,self.udof)
         self.fdof = self.fdof.reshape([self.fdof.shape[0],1])
-        self.dfb = np.zeros(self.fdof.shape[0],self.step_num)
-        print(self.fdof.shape)
-        print(self.bc_dof_1)
-        print(self.dub_2.shape)
+        self.dfb = np.zeros([self.fdof.shape[0],self.step_num])
